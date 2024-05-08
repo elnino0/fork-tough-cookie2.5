@@ -1,0 +1,46 @@
+index 32dc0f8..8d05b38 100644
+--- a/lib/cookie.js
++++ b/lib/cookie.js
+@@ -985,7 +985,9 @@ function CookieJar(store, options) {
+     store = new MemoryCookieStore();
+   }
+   this.store = store;
++
+ }
++
+ CookieJar.prototype.store = null;
+ CookieJar.prototype.rejectPublicSuffixes = true;
+ CookieJar.prototype.enableLooseMode = false;
+@@ -1463,6 +1465,7 @@ CAN_BE_SYNC.forEach(function(method) {
+   CookieJar.prototype[method+'Sync'] = syncWrap(method);
+ });
+
++Object.seal(CookieJar.prototype)
+ exports.version = VERSION;
+ exports.CookieJar = CookieJar;
+ exports.Cookie = Cookie;
+diff --git a/package.json b/package.json
+index 8af9909..106bdd1 100644
+--- a/package.json
++++ b/package.json
+@@ -67,7 +67,7 @@
+   "devDependencies": {
+     "async": "^1.4.2",
+     "genversion": "^2.1.0",
+-    "nyc": "^11.6.0",
++    "nyc": "^15.1.0",
+     "string.prototype.repeat": "^0.2.0",
+     "vows": "^0.8.2"
+   },
+diff --git a/test/ietf_test.js b/test/ietf_test.js
+index 8bd41dd..c414738 100644
+--- a/test/ietf_test.js
++++ b/test/ietf_test.js
+@@ -62,7 +62,6 @@ function setGetCookieVows() {
+       });
+
+       var actual = jar.getCookiesSync(sentTo,{sort:true});
+-
+       assert.strictEqual(actual.length, expected.length);
+
+       actual.forEach(function (actualCookie, idx) {
