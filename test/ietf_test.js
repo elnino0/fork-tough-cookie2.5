@@ -62,7 +62,6 @@ function setGetCookieVows() {
       });
 
       var actual = jar.getCookiesSync(sentTo,{sort:true});
-
       assert.strictEqual(actual.length, expected.length);
 
       actual.forEach(function (actualCookie, idx) {
